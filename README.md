@@ -72,4 +72,4 @@ sentiment-app/
 | Rôle | Nom | Identifiant GitHub | Travail de la semaine 1 |
 | --- | --- | --- | --- |
 | Membre A | khoubbaz Meriem | [@meriem24-beep] | |
-| Membre B | [Nom 2] | [@login] | |
+| Membre B2 | amine doha | [@dohq25-beeep] | |

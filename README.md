@@ -73,3 +73,4 @@ sentiment-app/
 | --- | --- | --- | --- |
 | Membre A | khoubbaz Meriem | [@meriem24-beep] | |
 | Membre B2 | amine doha | [@dohq25-beeep] | |
+| Membre B1 | aya oubenadi | [@ayaoubenadi563] 

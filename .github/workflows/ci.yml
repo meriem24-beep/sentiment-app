@@ -14,5 +14,7 @@ jobs:
         run: . .venv/bin/activate && ruff check .
       - name: mypy
         run: . .venv/bin/activate && mypy api
+      - name: Entraîner le modèle
+        run: . .venv/bin/activate && python src/train.py
       - name: Tests et couverture
         run: . .venv/bin/activate && pytest -q --cov=api --cov-report=term-missing --cov-fail-under=95

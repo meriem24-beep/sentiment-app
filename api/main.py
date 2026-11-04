@@ -63,21 +63,24 @@ async def health_check():
 
 @app.post("/predict", response_model=PredictResponse, summary="Classifier un texte")
 async def predict(request: PredictRequest):
-    """Renvoie le sentiment (POSITIVE ou NEGATIVE) et la confiance.
-
-    - 422 : texte vide ou trop long (Pydantic), ou refusé par le modèle
-    - 503 : modèle non chargé
-    - 500 : erreur inattendue (journalisée côté serveur, jamais renvoyée au client)
-    """
+    """Renvoie le sentiment (POSITIVE ou NEGATIVE) et la confiance."""
     clf = _classifier()
+
     try:
         result = clf.predict(request.text)
-    except ValueError as e:
-        raise HTTPException(status_code=422, detail=str(e))
-    except Exception:
+    except Exception as err:
         logger.exception("Erreur lors de la prédiction")
-        raise HTTPException(status_code=500, detail="Erreur interne du serveur")
-    logger.info("predict: %r -> %s (%.2f)", request.text[:50], result["label"], result["score"])
+        raise HTTPException(
+            status_code=500,
+            detail="Erreur interne du serveur",
+        ) from err
+
+    logger.info(
+        "predict: %r -> %s (%.2f)",
+        request.text[:50],
+        result["label"],
+        result["score"],
+    )
     return result
 
 

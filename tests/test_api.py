@@ -55,3 +55,14 @@ def test_predict_texte_vide_422(client):
 def test_predict_champ_manquant_422(client):
     assert client.post("/predict", json={}).status_code == 422
     assert client.post("/predict", json={"text": 42}).status_code == 422
+
+
+def test_predict_mots_inconnus_indetermine(client):
+    r = client.post(
+        "/predict",
+        json={"text": "xylophène zargloub truniflex blorpt"},
+    )
+    assert r.status_code == 200
+    body = r.json()
+    assert body["label"] == "INDETERMINE"
+    assert 0 <= body["score"] <= 1

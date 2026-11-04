@@ -1,0 +1,21 @@
+text,attendu,difficulte,erreur_connue
+"Commande reçue rapidement, emballage impeccable et produit conforme.",POSITIVE,,
+"Je recommande ce vendeur, le service client a été très professionnel.",POSITIVE,,
+"Le produit fonctionne parfaitement et correspond exactement à mes attentes.",POSITIVE,,
+"Très bonne qualité, livraison soignée, je suis entièrement satisfait.",POSITIVE,,
+"Après plusieurs semaines d'utilisation, tout fonctionne encore très bien.",POSITIVE,,
+"Pas déçu du tout, ce produit est vraiment excellent.",POSITIVE,négation,
+"Je pensais recevoir un produit médiocre, mais il est finalement très réussi.",POSITIVE,négation,
+"Bravo pour cette livraison en seulement trois jours, quelle efficacité !",POSITIVE,ironie,
+"Le début était compliqué, mais le service client a finalement réglé mon problème.",POSITIVE,avis mitigé,
+"Le restaurant propose des plats délicieux et un accueil chaleureux.",POSITIVE,autre domaine,
+"Produit arrivé cassé, emballage abîmé et aucune réponse du vendeur.",NEGATIVE,,
+"Très mauvaise expérience, le service était lent et désagréable.",NEGATIVE,,Erreur franche connue
+"Qualité catastrophique, le produit ne fonctionne même pas.",NEGATIVE,,
+"Commande livrée avec deux semaines de retard, je suis très mécontent.",NEGATIVE,,
+"Je déconseille fortement cet achat, le rapport qualité-prix est mauvais.",NEGATIVE,,Erreur franche connue
+"Ce n'est pas du tout un bon produit, je regrette mon achat.",NEGATIVE,négation,
+"Le vendeur prétend aider ses clients, mais personne ne répond jamais.",NEGATIVE,ironie,
+"Le produit est joli, mais il tombe en panne après quelques minutes.",NEGATIVE,avis mitigé,
+"Le début semblait prometteur, mais la fin de l'expérience a été décevante.",NEGATIVE,avis mitigé,
+"Le film est ennuyeux, les acteurs jouent mal et l'histoire manque d'intérêt.",NEGATIVE,autre domaine,

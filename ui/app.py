@@ -10,7 +10,7 @@ RACINE = Path(__file__).resolve().parents[1]
 if str(RACINE) not in sys.path:
     sys.path.insert(0, str(RACINE))
 
-from ui import client  # noqa: E402, I001
+from ui import client, graphiques  # noqa: E402, I001
 
 
 st.set_page_config(
@@ -163,6 +163,12 @@ with onglet_lot:
                 )
 
                 st.bar_chart(statistiques)
+
+                colonne_confiances = st.container()
+                colonne_confiances.caption("Confiance du modèle, par tranche")
+                colonne_confiances.bar_chart(
+                    graphiques.histogramme_confiances(reponses)
+                )
 
                 st.subheader("Détail des avis")
 

@@ -1,12 +1,7 @@
 
 """Raccord entre l'API et le modèle entraîné au TP2."""
-import sys
-from pathlib import Path
-
-RACINE = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(RACINE / "src"))
-
-from predict import charger_modele, predict as _predict  # noqa: E402, I001
+from sentiment_app.predict import charger_modele
+from sentiment_app.predict import predict as _predict
 
 SEUIL_ABSTENTION = 0.60
 

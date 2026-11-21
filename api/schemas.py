@@ -4,7 +4,6 @@ from typing import Literal
 
 from pydantic import BaseModel, Field, field_validator
 
-
 # Les trois seules valeurs que l'API peut renvoyer.
 Label = Literal["POSITIVE", "NEGATIVE", "INDETERMINE"]
 

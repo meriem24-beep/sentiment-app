@@ -7,7 +7,7 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException, Request
 
-from api.model import SEUIL_ABSTENTION
+from api.model import SEUIL_ABSTENTION, SentimentClassifier
 from api.schemas import (
     ErreurV1,
     HealthResponse,
@@ -33,7 +33,7 @@ router = APIRouter(
 )
 
 
-def classifier(request: Request):
+def classifier(request: Request) -> SentimentClassifier:
     """Récupère le classificateur chargé au démarrage."""
     clf = getattr(request.app.state, "classifier", None)
 
@@ -51,7 +51,7 @@ def classifier(request: Request):
     response_model=HealthResponse,
     summary="Santé (public)",
 )
-def sante(clf: Annotated[object, Depends(classifier)]) -> dict[str, str]:
+def sante(clf: Annotated[SentimentClassifier, Depends(classifier)]) -> dict[str, str]:
     return {
         "status": "OK",
         "model": clf.model_name,
@@ -66,7 +66,7 @@ def sante(clf: Annotated[object, Depends(classifier)]) -> dict[str, str]:
 )
 def predire(
     corps: PredictRequest,
-    clf: Annotated[object, Depends(classifier)],
+    clf: Annotated[SentimentClassifier, Depends(classifier)],
 ) -> dict:
     try:
         resultat = clf.predict(corps.text)
@@ -94,7 +94,7 @@ def predire(
     dependencies=[Depends(exiger("admin"))],
 )
 def modele(
-    clf: Annotated[object, Depends(classifier)],
+    clf: Annotated[SentimentClassifier, Depends(classifier)],
 ) -> dict:
     metriques = (
         json.loads(METRIQUES.read_text(encoding="utf-8"))

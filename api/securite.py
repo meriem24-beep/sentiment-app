@@ -3,12 +3,15 @@
 import os
 import secrets
 from collections.abc import Callable
-from typing import Annotated, Literal
+from typing import Annotated, Literal, TypeGuard
 
 from fastapi import Depends, Header, HTTPException, Security
 from fastapi.security import APIKeyHeader
 
 Role = Literal["client", "admin"]
+def est_role(role: str) -> TypeGuard[Role]:
+    """Vérifie qu'une chaîne correspond à un rôle autorisé."""
+    return role in ("client", "admin")
 
 LONGUEUR_MIN = 16
 
@@ -29,16 +32,22 @@ def charger_cles(brut: str | None = None) -> dict[str, Role]:
     for entree in filter(None, (m.strip() for m in brut.split(","))):
         cle, separateur, role = entree.rpartition(":")
 
-        if not separateur or role not in ("client", "admin"):
+        if not separateur:
             raise ValueError("Rôle inconnu ou format invalide dans API_KEYS.")
 
+        if role == "client":
+            role_valide: Role = "client"
+        elif role == "admin":
+            role_valide = "admin"
+        else:
+            raise ValueError("Rôle inconnu ou format invalide dans API_KEYS.")
         if len(cle) < LONGUEUR_MIN:
             raise ValueError(
                 f"Clé trop courte dans API_KEYS "
                 f"({len(cle)} caractères, minimum {LONGUEUR_MIN})."
             )
 
-        cles[cle] = role
+        cles[cle] = role_valide
 
     return cles
 
@@ -108,6 +117,12 @@ def verifier_api_key(
     )
 
 
-def exiger_role(role_requis: str):
+def exiger_role(role_requis: str) -> Callable[[Role], Role]:
     """Ancienne fonction de vérification des rôles."""
-    return exiger(role_requis)
+    if role_requis == "client":
+        return exiger("client")
+
+    if role_requis == "admin":
+        return exiger("admin")
+
+    raise ValueError("Rôle inconnu.")

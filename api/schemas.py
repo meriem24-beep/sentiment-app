@@ -1,6 +1,11 @@
 
 """Contrats d'entrée et de sortie de l'API (Pydantic v2)."""
+from typing import Literal
+
 from pydantic import BaseModel, Field, field_validator
+
+# Les trois seules valeurs que l'API peut renvoyer.
+Label = Literal["POSITIVE", "NEGATIVE", "INDETERMINE"]
 
 
 class PredictRequest(BaseModel):
@@ -23,9 +28,20 @@ class PredictRequest(BaseModel):
 
 class PredictResponse(BaseModel):
     """Réponse de prédiction."""
-    label: str = Field(..., description="POSITIVE, NEGATIVE ou INDETERMINE")
-    score: float = Field(..., ge=0, le=1, description="Confiance de la classe prédite")
-    text: str = Field(..., description="Aperçu du texte analysé (100 caractères)")
+    label: Label = Field(
+        ...,
+        description="POSITIVE, NEGATIVE ou INDETERMINE",
+    )
+    score: float = Field(
+        ...,
+        ge=0,
+        le=1,
+        description="Confiance de la classe prédite",
+    )
+    text: str = Field(
+        ...,
+        description="Aperçu du texte analysé (100 caractères)",
+    )
 
 
 class HealthResponse(BaseModel):
@@ -37,3 +53,40 @@ class HealthResponse(BaseModel):
 class ErrorResponse(BaseModel):
     """Format standard des erreurs FastAPI."""
     detail: str
+
+
+class ChampInvalide(BaseModel):
+    """Détail d'un champ refusé."""
+    champ: str = Field(
+        ...,
+        description="Chemin du champ refusé, par exemple body.text",
+    )
+    message: str
+
+
+class DetailErreur(BaseModel):
+    """Informations détaillées sur une erreur."""
+    code: str = Field(
+        ...,
+        description="Code stable, par exemple ENTREE_INVALIDE ou NON_AUTHENTIFIE",
+    )
+    message: str = Field(
+        ...,
+        description="Message lisible, susceptible de changer",
+    )
+    champs: list[ChampInvalide] = Field(default_factory=list)
+
+
+class ErreurV1(BaseModel):
+    """Format unique de toutes les erreurs de /v1."""
+    erreur: DetailErreur
+
+
+class ModeleResponse(BaseModel):
+    """Réponse de GET /v1/modele (rôle admin)."""
+    model: str
+    seuil_abstention: float
+    metriques: dict = Field(
+        default_factory=dict,
+        description="Contenu de models/metrics.json",
+    )
